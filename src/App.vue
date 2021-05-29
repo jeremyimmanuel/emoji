@@ -1,17 +1,56 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div
+    class="flex flex-col justify-items-center items-center bg-red-200 h-screen"
+  >
+    <emoji-search
+      :value="emojiQuery"
+      @input="emojiQuery = $event.target.value"
+      type="text"
+      placeholder="emoji-search"
+      @keyup.enter="print"
+    />
+    <button @click="print">Print!</button>
+    {{ emojiQuery }}
+    <button @click="fetchAllEmojis">All</button>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import EmojiSearch from "@/components/EmojiSearch.vue";
+import EmojiApi from "@/services/emojiApi";
 export default {
-  name: 'App',
+  name: "App",
+
+  data() {
+    return {
+      emojiQuery: "",
+    };
+  },
+
+  methods: {
+    print() {
+      console.log(this.emojiQuery);
+    },
+
+    async fetchAllEmojis() {
+      try {
+        await EmojiApi.fetchAllEmojis();
+      } catch (error) {
+        console.log("error", error);
+      }
+    },
+  },
+
+  watch: {
+    emojiQuery(emojiQuery) {
+      console.log(emojiQuery);
+    },
+  },
+
   components: {
-    HelloWorld
-  }
-}
+    EmojiSearch,
+  },
+};
 </script>
 
 <style>
@@ -21,6 +60,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
