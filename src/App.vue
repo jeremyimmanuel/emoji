@@ -11,7 +11,12 @@
     />
     <button @click="fetchAllEmojis">All</button>
     <div class="grid grid-cols-10 gap-4 grid-flow-row auto-cols-fr max-w-xl">
-      <div v-for="emoji in emojiShown" :key="emoji.codePoint" class="text-5xl">
+      <div
+        v-for="emoji in emojiShown"
+        :key="emoji.codePoint"
+        class="text-5xl cursor-pointer emoji"
+        :data-clipboard-text="emoji.character"
+      >
         {{ emoji.character }}
       </div>
     </div>
@@ -21,6 +26,8 @@
 <script>
 import EmojiSearch from "@/components/EmojiSearch.vue";
 import EmojiApi from "@/services/emojiApi";
+import ClipboardJS from "clipboard";
+
 export default {
   name: "App",
 
@@ -29,6 +36,12 @@ export default {
       emojiQuery: "",
       emojiShown: [],
     };
+  },
+
+  created() {
+    var clipboard = new ClipboardJS(".emoji");
+
+    clipboard.on("success", (e) => console.log(e));
   },
 
   methods: {

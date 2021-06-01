@@ -10,6 +10,7 @@
   "dependencies": {
     "autoprefixer": "^9",
     "axios": "^0.21.1",
+    "clipboard": "^2.0.8",
     "core-js": "^3.6.5",
     "postcss": "^7",
     "sass": "^1.34.0",
