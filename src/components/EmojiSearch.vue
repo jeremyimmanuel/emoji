@@ -5,14 +5,6 @@
 <script>
 export default {
   name: "EmojiSearch",
-
-  //   emits: ["update:modelValue"],
-
-  //   props: {
-  //     modelValue: {
-  //       type: String,
-  //     },
-  //   },
 };
 </script>
 
