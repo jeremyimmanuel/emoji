@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-col justify-center items-center">
-    <header class="bg-blue-300 h-64 w-full flex flex-col p-4 items-center">
-      <h1 class="text-6xl font-black mb-4 mt-auto">em😂jiclip.dev</h1>
+    <header class="bg-blue-300 h-96 w-full flex flex-col p-4 items-center">
+      <h1 class="text-8xl font-black mb-4 mt-auto">em😂jiclip.dev</h1>
+      <h3 class="text-4xl font-bold">Click emoji to copy</h3>
       <emoji-search
         class="mt-auto"
         :value="emojiQuery"
@@ -11,25 +12,33 @@
         @keyup.enter="searchEmoji"
       />
     </header>
-    <div
-      v-if="emojiShown.length"
-      class="grid grid-cols-10 gap-6 grid-flow-row auto-cols-fr max-w-xl my-4"
-    >
-      <div
-        v-for="emoji in emojiShownFiltered"
-        :key="emoji.slug"
-        class="text-5xl cursor-pointer emoji"
-        :data-clipboard-text="emoji.character"
-      >
-        <span
-          class="tooltipped tooltipped-s tooltipped-no-delay"
-          :aria-label="emoji.unicodeName"
+    <div class="my-6">
+      <template v-if="!isLoading">
+        <div
+          v-if="this.emojiShownFiltered.length"
+          class="grid grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
         >
-          {{ emoji.character }}
-        </span>
+          <div v-for="emoji in emojiShownFiltered" :key="emoji.slug">
+            <span
+              class="tooltipped tooltipped-n"
+              :aria-label="emoji.unicodeName"
+            >
+              <div
+                class="text-5xl cursor-pointer emoji"
+                :data-clipboard-text="emoji.character"
+              >
+                {{ emoji.character }}
+              </div>
+            </span>
+          </div>
+        </div>
+        <div v-else>No emoji found for {{ emojiQuery }}</div>
+      </template>
+      <div v-else>
+        <span>Loading</span>
+        <span class="AnimatedEllipsis"></span>
       </div>
     </div>
-    <div v-else>Hello there</div>
     <footer class="bg-red-300 w-screen h-16">
       Made with ❤️ by Jeremy Tandjung
     </footer>
@@ -54,6 +63,8 @@ export default {
       emojiQuery: "",
       emojiShown: [],
       copied: false,
+      isLoading: false,
+      oTitle: "😂",
     };
   },
 
@@ -71,6 +82,7 @@ export default {
   computed: {
     /** The open emoji api returns duplicates emojis with a e[number]-[number] prefix */
     emojiShownFiltered() {
+      if (!this.emojiShown) return [];
       const r = new RegExp(/e\d+-\d+/);
       return this.emojiShown.filter((emoji) => !r.test(emoji.slug));
     },
@@ -78,15 +90,18 @@ export default {
 
   methods: {
     async fetchAllEmojis() {
+      this.isLoading = true;
       try {
         const { allEmojis, error } = await EmojiApi.fetchAllEmojis();
         if (!error) this.emojiShown = allEmojis;
       } catch (error) {
         console.log("error", error);
       }
+      this.isLoading = false;
     },
 
     async searchEmoji() {
+      this.isLoading = true;
       const { searchResults, error } = await EmojiApi.searchEmoji(
         this.emojiQuery
       );
@@ -94,6 +109,7 @@ export default {
         this.emojiShown = searchResults;
         console.log("emojiShown", this.emojiShown);
       }
+      this.isLoading = false;
     },
   },
 
@@ -111,6 +127,61 @@ export default {
   text-align: center;
   color: #2c3e50;
   height: 100%;
+}
+
+.emoji {
+  &:hover {
+    transform: scale(1.5);
+  }
+
+  @keyframes magnify {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+
+    100% {
+      transform: scale(2);
+    }
+  }
+
+  @keyframes shake {
+    0% {
+      transform: translate(1px, 1px) rotate(0deg);
+    }
+    10% {
+      transform: translate(-1px, -2px) rotate(-1deg);
+    }
+    20% {
+      transform: translate(-3px, 0px) rotate(1deg);
+    }
+    30% {
+      transform: translate(3px, 2px) rotate(0deg);
+    }
+    40% {
+      transform: translate(1px, -1px) rotate(1deg);
+    }
+    50% {
+      transform: translate(-1px, 2px) rotate(-1deg);
+    }
+    60% {
+      transform: translate(-3px, 1px) rotate(0deg);
+    }
+    70% {
+      transform: translate(3px, 1px) rotate(-1deg);
+    }
+    80% {
+      transform: translate(-1px, -1px) rotate(1deg);
+    }
+    90% {
+      transform: translate(1px, 2px) rotate(0deg);
+    }
+    100% {
+      transform: translate(1px, -2px) rotate(-1deg);
+    }
+  }
 }
 
 .fade-enter-active,
