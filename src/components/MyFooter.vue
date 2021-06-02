@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="bg-red-300 w-screen h-24 flex flex-row flex-wrap justify-between px-16 items-center"
+    class="bg-yellow-200 w-screen h-24 flex flex-row flex-wrap justify-between px-16 items-center"
   >
     <span class="text-xl">
       Developed by
