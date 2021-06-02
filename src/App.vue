@@ -14,7 +14,7 @@
       <template v-if="!isLoading">
         <div
           v-if="this.emojiShownFiltered.length"
-          class="grid grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
+          class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
         >
           <div v-for="emoji in emojiShownFiltered" :key="emoji.slug">
             <span
@@ -38,10 +38,29 @@
       </div>
     </div>
     <footer
-      class="bg-red-300 w-screen h-24 flex flex-row justify-between px-16 items-center"
+      class="bg-red-300 w-screen h-24 flex flex-row flex-wrap justify-between px-16 items-center"
     >
-      <span class="text-xl"> Made with ❤️ by Jeremy Tandjung </span>
-      <div>hello</div>
+      <span class="text-xl">Developed by Jeremy Tandjung </span>
+      <div class="flex flex-row">
+        <a href="http://www.linkedin.com/in/jeremytandjung" target="_blank">
+          <img
+            class="cursor-pointer mx-4"
+            :src="require('@/assets/linkedin-black.png')"
+            alt="linkedin"
+            height="32"
+            width="32"
+          />
+        </a>
+        <a href="http://www.github.com/jeremyimmanuel" target="_blank">
+          <img
+            class="cursor-pointer"
+            :src="require('@/assets/github-black.png')"
+            alt="github"
+            height="32"
+            width="32"
+          />
+        </a>
+      </div>
     </footer>
     <transition name="fade">
       <div v-show="copied" class="Toast fixed top-2 left-2">
@@ -74,7 +93,7 @@ export default {
 
     clipboard.on("success", () => {
       this.copied = true;
-      setTimeout(() => (this.copied = false), 2000);
+      setTimeout(() => (this.copied = false), 4000);
     });
 
     await this.fetchAllEmojis();
