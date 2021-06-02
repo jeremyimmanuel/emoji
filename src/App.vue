@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col justify-center items-center">
-    <my-header :o-title="o">
+    <my-header :o-title="copiedEmoji">
       <emoji-search
         class="mt-auto"
         :value="emojiQuery"
@@ -33,11 +33,7 @@
       </div>
     </div>
     <my-footer />
-    <transition name="fade">
-      <div v-show="copied" class="Toast fixed top-2 left-2">
-        <span class="p-2 font-bold bg-white rounded-md">Copied!</span>
-      </div>
-    </transition>
+    <my-toast v-show="copied" class="my-toast" />
   </div>
 </template>
 
@@ -47,6 +43,7 @@ import EmojiSearch from "@/components/EmojiSearch.vue";
 import EmojiApi from "@/services/emojiApi";
 import EmojiGridItem from "@/components/EmojiGridItem.vue";
 import MyFooter from "@/components/MyFooter.vue";
+import MyToast from "@/components/MyToast.vue";
 
 import Bounce from "bounce.js";
 import ClipboardJS from "clipboard";
@@ -56,11 +53,12 @@ export default {
 
   data() {
     return {
-      o: "",
+      copiedEmoji: "",
       emojiQuery: "",
       emojiShown: [],
       copied: false,
       isLoading: false,
+      toastArray: [],
     };
   },
 
@@ -71,14 +69,23 @@ export default {
       to: { x: 1.5, y: 1.5 },
     });
     bounce.define("bounce");
+
+    let roadRunner = new Bounce();
+    roadRunner.translate({
+      from: { x: -500, y: 0 },
+      to: { x: 0, y: 0 },
+      duration: 2000,
+    });
+
+    roadRunner.define("road-runner");
   },
 
   async created() {
     var clipboard = new ClipboardJS(".emoji");
 
     clipboard.on("success", (e) => {
-      this.copied = true;
-      this.o = e.text;
+      if (!this.copied) this.copied = true;
+      this.copiedEmoji = e.text;
       setTimeout(() => (this.copied = false), 4000);
     });
 
@@ -124,6 +131,7 @@ export default {
     MyHeader,
     EmojiGridItem,
     MyFooter,
+    MyToast,
   },
 };
 </script>
@@ -136,6 +144,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   height: 100%;
+}
+
+.my-toast {
+  animation: road-runner 1s linear both;
 }
 
 .fade-enter-active,
