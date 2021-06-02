@@ -56,7 +56,6 @@ import Loader from "@/components/Loader.vue";
 
 import EmojiApi from "@/services/emojiApi";
 
-import Bounce from "bounce.js";
 import ClipboardJS from "clipboard";
 import { v4 as uuidv4 } from "uuid";
 import EmptyState from "@/components/EmptyState.vue";
@@ -75,23 +74,6 @@ export default {
       toastArray: [],
       empty: false,
     };
-  },
-
-  beforeCreate() {
-    let scale15 = new Bounce();
-    scale15.scale({
-      from: { x: 1, y: 1 },
-      to: { x: 1.5, y: 1.5 },
-    });
-    scale15.define("scale15");
-
-    let roadRunner = new Bounce();
-    roadRunner.translate({
-      from: { x: -500, y: 0 },
-      to: { x: 0, y: 0 },
-      duration: 2000,
-    });
-    roadRunner.define("road-runner");
   },
 
   async created() {
