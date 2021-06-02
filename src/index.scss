@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "@primer/css/toasts/index.scss";
+@import "@primer/css/tooltips/index.scss";
+
+:root {
+    --color-tooltip-bg: grey;
+    --color-tooltip-text: white;
+}

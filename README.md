@@ -1,5 +1,11 @@
 # emoji
 
+This is a simple webapp that calls the open emoji api and shows it to the user.
+
+## Current status
+
+In progress..
+
 ## Project setup
 ```
 yarn install

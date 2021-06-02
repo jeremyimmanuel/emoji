@@ -985,6 +985,18 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
+"@primer/css@^17.2.1":
+  version "17.2.1"
+  resolved "https://registry.yarnpkg.com/@primer/css/-/css-17.2.1.tgz#1822bff2fc8a3fcbfdf085c2d2e25e2c0d63b88b"
+  integrity sha512-taxClJ79UnLNZPbH4ejgO5sLCsJ5LKiZLCWTqBIbFU+CbIdzW71tq4js5flFhmIRZkLUwqwA7eT+UXYnsx/R8g==
+  dependencies:
+    "@primer/primitives" "^4.3.5"
+
+"@primer/primitives@^4.3.5":
+  version "4.3.7"
+  resolved "https://registry.yarnpkg.com/@primer/primitives/-/primitives-4.3.7.tgz#34bfb156c47c417bf30bcb634e63afabd2edf96e"
+  integrity sha512-NlQhIPtnwAyVd34I9K7+E4uOzTKcR1J8VMd6j0PZY7FyV4jvx7IIl8/ayQe6CmhME5XN8dmYDk94LDkPRM44ug==
+
 "@soda/friendly-errors-webpack-plugin@^1.7.1":
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/@soda/friendly-errors-webpack-plugin/-/friendly-errors-webpack-plugin-1.8.0.tgz#84751d82a93019d5c92c0cf0e45ac59087cd2240"
