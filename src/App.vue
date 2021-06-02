@@ -17,17 +17,12 @@
           class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
         >
           <div v-for="emoji in emojiShownFiltered" :key="emoji.slug">
-            <span
-              class="tooltipped tooltipped-n"
-              :aria-label="emoji.unicodeName"
-            >
-              <div
-                class="text-5xl cursor-pointer emoji"
-                :data-clipboard-text="emoji.character"
-              >
-                {{ emoji.character }}
-              </div>
-            </span>
+            <emoji-grid-item
+              class="emoji"
+              :data-clipboard-text="emoji.character"
+              :tooltip-text="emoji.unicodeName"
+              :emoji="emoji.character"
+            />
           </div>
         </div>
         <div v-else>No emoji found for {{ emojiQuery }}</div>
@@ -40,7 +35,12 @@
     <footer
       class="bg-red-300 w-screen h-24 flex flex-row flex-wrap justify-between px-16 items-center"
     >
-      <span class="text-xl">Developed by Jeremy Tandjung </span>
+      <span class="text-xl">
+        Developed by
+        <a href="mailto:jeremytandjung@icloud.com" target="_blank">
+          Jeremy Tandjung
+        </a>
+      </span>
       <div class="flex flex-row">
         <a href="http://www.linkedin.com/in/jeremytandjung" target="_blank">
           <img
@@ -75,6 +75,7 @@ import MyHeader from "@/components/MyHeader.vue";
 import EmojiSearch from "@/components/EmojiSearch.vue";
 import EmojiApi from "@/services/emojiApi";
 import ClipboardJS from "clipboard";
+import EmojiGridItem from "@/components/EmojiGridItem.vue";
 
 export default {
   name: "App",
@@ -136,6 +137,7 @@ export default {
   components: {
     EmojiSearch,
     MyHeader,
+    EmojiGridItem,
   },
 };
 </script>
