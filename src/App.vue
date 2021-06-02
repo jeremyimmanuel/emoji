@@ -33,7 +33,13 @@
       </div>
     </div>
     <my-footer />
-    <my-toast v-show="copied" class="my-toast" />
+    <my-toast
+      v-for="toastData in toastArray"
+      :key="toastData.id"
+      emojiclass="my-toast"
+    >
+      {{ toastData.emoji }} copied!
+    </my-toast>
   </div>
 </template>
 
@@ -47,6 +53,7 @@ import MyToast from "@/components/MyToast.vue";
 
 import Bounce from "bounce.js";
 import ClipboardJS from "clipboard";
+import { v4 as uuidv4 } from "uuid";
 
 export default {
   name: "App",
@@ -84,9 +91,10 @@ export default {
     var clipboard = new ClipboardJS(".emoji");
 
     clipboard.on("success", (e) => {
-      if (!this.copied) this.copied = true;
+      // if (!this.copied) this.copied = true;
       this.copiedEmoji = e.text;
-      setTimeout(() => (this.copied = false), 4000);
+      this.addToast();
+      setTimeout(() => this.removeOldestToast(), 2000);
     });
 
     await this.fetchAllEmojis();
@@ -121,6 +129,19 @@ export default {
       if (!error) this.emojiShown = searchResults;
       this.isLoading = false;
     },
+
+    addToast() {
+      const id = uuidv4();
+      const data = {
+        id,
+        emoji: this.copiedEmoji,
+      };
+      this.toastArray.push(data);
+    },
+
+    removeOldestToast() {
+      this.toastArray.splice(0, 1);
+    },
   },
 
   components: {
@@ -144,7 +165,7 @@ export default {
 }
 
 .my-toast {
-  animation: road-runner 1s linear both;
+  animation: road-runner 1s ease-in-out both;
 }
 
 .fade-enter-active,
