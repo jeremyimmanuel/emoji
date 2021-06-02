@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col justify-items-center items-center">
+  <div class="flex flex-col justify-center items-center">
     <header class="bg-blue-300 h-64 w-full flex flex-col p-4 items-center">
-      <h1 class="text-4xl font-black mb-4 mt-auto">Emoji Clipboard</h1>
+      <h1 class="text-6xl font-black mb-4 mt-auto">em😂jiclip.dev</h1>
       <emoji-search
         class="mt-auto"
         :value="emojiQuery"
@@ -13,7 +13,7 @@
     </header>
     <div
       v-if="emojiShown.length"
-      class="grid grid-cols-10 gap-4 grid-flow-row auto-cols-fr max-w-xl my-4"
+      class="grid grid-cols-10 gap-6 grid-flow-row auto-cols-fr max-w-xl my-4"
     >
       <div
         v-for="emoji in emojiShownFiltered"
@@ -69,6 +69,7 @@ export default {
   },
 
   computed: {
+    /** The open emoji api returns duplicates emojis with a e[number]-[number] prefix */
     emojiShownFiltered() {
       const r = new RegExp(/e\d+-\d+/);
       return this.emojiShown.filter((emoji) => !r.test(emoji.slug));
@@ -76,10 +77,6 @@ export default {
   },
 
   methods: {
-    print() {
-      console.log(this.emojiQuery);
-    },
-
     async fetchAllEmojis() {
       try {
         const { allEmojis, error } = await EmojiApi.fetchAllEmojis();
@@ -108,7 +105,7 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Ubuntu", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
