@@ -25,7 +25,7 @@ export default {
 .emojiItem {
   &:hover {
     // bounce animation defined in `App.vue`
-    animation: bounce 0.5s linear both;
+    animation: scale15 0.5s linear both;
   }
 }
 

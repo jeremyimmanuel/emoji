@@ -63,12 +63,12 @@ export default {
   },
 
   beforeCreate() {
-    let bounce = new Bounce();
-    bounce.scale({
+    let scale15 = new Bounce();
+    scale15.scale({
       from: { x: 1, y: 1 },
       to: { x: 1.5, y: 1.5 },
     });
-    bounce.define("bounce");
+    scale15.define("scale15");
 
     let roadRunner = new Bounce();
     roadRunner.translate({
@@ -118,10 +118,7 @@ export default {
       const { searchResults, error } = await EmojiApi.searchEmoji(
         this.emojiQuery
       );
-      if (!error) {
-        this.emojiShown = searchResults;
-        console.log("emojiShown", this.emojiShown);
-      }
+      if (!error) this.emojiShown = searchResults;
       this.isLoading = false;
     },
   },
