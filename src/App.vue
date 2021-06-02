@@ -1,8 +1,6 @@
 <template>
   <div class="flex flex-col justify-center items-center">
-    <header class="bg-blue-300 h-96 w-full flex flex-col p-4 items-center">
-      <h1 class="text-8xl font-black mb-4 mt-auto">em😂jiclip.dev</h1>
-      <h3 class="text-4xl font-bold">Click emoji to copy</h3>
+    <my-header>
       <emoji-search
         class="mt-auto"
         :value="emojiQuery"
@@ -11,7 +9,7 @@
         placeholder="Search emoji"
         @keyup.enter="searchEmoji"
       />
-    </header>
+    </my-header>
     <div class="my-6">
       <template v-if="!isLoading">
         <div
@@ -39,8 +37,11 @@
         <span class="AnimatedEllipsis"></span>
       </div>
     </div>
-    <footer class="bg-red-300 w-screen h-16">
-      Made with ❤️ by Jeremy Tandjung
+    <footer
+      class="bg-red-300 w-screen h-24 flex flex-row justify-between px-16 items-center"
+    >
+      <span class="text-xl"> Made with ❤️ by Jeremy Tandjung </span>
+      <div>hello</div>
     </footer>
     <transition name="fade">
       <div v-show="copied" class="Toast fixed top-2 left-2">
@@ -51,6 +52,7 @@
 </template>
 
 <script>
+import MyHeader from "@/components/MyHeader.vue";
 import EmojiSearch from "@/components/EmojiSearch.vue";
 import EmojiApi from "@/services/emojiApi";
 import ClipboardJS from "clipboard";
@@ -64,7 +66,6 @@ export default {
       emojiShown: [],
       copied: false,
       isLoading: false,
-      oTitle: "😂",
     };
   },
 
@@ -115,6 +116,7 @@ export default {
 
   components: {
     EmojiSearch,
+    MyHeader,
   },
 };
 </script>
