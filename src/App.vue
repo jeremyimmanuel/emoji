@@ -10,27 +10,30 @@
         @keyup.enter="searchEmoji"
       />
     </my-header>
+    <!-- Body -->
     <div class="my-6">
-      <template v-if="!isLoading">
-        <div
-          v-if="this.emojiShownFiltered.length"
-          class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
-        >
-          <div v-for="emoji in emojiShownFiltered" :key="emoji.slug">
-            <emoji-grid-item
-              class="emoji"
-              :data-clipboard-text="emoji.character"
-              :tooltip-text="emoji.unicodeName"
-              :emoji="emoji.character"
-            />
+      <empty-state v-if="empty" />
+      <template v-else>
+        <template v-if="!isLoading">
+          <div
+            v-if="this.emojiShown.length"
+            class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
+          >
+            <div v-for="emoji in emojiShown" :key="emoji.slug">
+              <emoji-grid-item
+                class="emoji"
+                :data-clipboard-text="emoji.character"
+                :tooltip-text="emoji.unicodeName"
+                :emoji="emoji.character"
+              />
+            </div>
           </div>
+          <div v-else>No emoji found for {{ badQuery }}</div>
+        </template>
+        <div v-else>
+          <loader class="my-4">{{ copiedEmoji }}</loader>
         </div>
-        <div v-else>No emoji found for {{ emojiQuery }}</div>
       </template>
-      <div v-else>
-        <span>Loading</span>
-        <span class="AnimatedEllipsis"></span>
-      </div>
     </div>
     <my-footer />
     <my-toast
@@ -46,26 +49,31 @@
 <script>
 import MyHeader from "@/components/MyHeader.vue";
 import EmojiSearch from "@/components/EmojiSearch.vue";
-import EmojiApi from "@/services/emojiApi";
 import EmojiGridItem from "@/components/EmojiGridItem.vue";
 import MyFooter from "@/components/MyFooter.vue";
 import MyToast from "@/components/MyToast.vue";
+import Loader from "@/components/Loader.vue";
+
+import EmojiApi from "@/services/emojiApi";
 
 import Bounce from "bounce.js";
 import ClipboardJS from "clipboard";
 import { v4 as uuidv4 } from "uuid";
+import EmptyState from "@/components/EmptyState.vue";
 
 export default {
   name: "App",
 
   data() {
     return {
-      copiedEmoji: "",
+      copiedEmoji: "😂",
       emojiQuery: "",
+      badQuery: "",
       emojiShown: [],
       copied: false,
       isLoading: false,
       toastArray: [],
+      empty: false,
     };
   },
 
@@ -83,7 +91,6 @@ export default {
       to: { x: 0, y: 0 },
       duration: 2000,
     });
-
     roadRunner.define("road-runner");
   },
 
@@ -97,7 +104,7 @@ export default {
       setTimeout(() => this.removeOldestToast(), 2000);
     });
 
-    await this.fetchAllEmojis();
+    await this.searchEmoji();
   },
 
   computed: {
@@ -110,23 +117,30 @@ export default {
   },
 
   methods: {
+    /** Not used */
     async fetchAllEmojis() {
-      this.isLoading = true;
-      try {
-        const { allEmojis, error } = await EmojiApi.fetchAllEmojis();
-        if (!error) this.emojiShown = allEmojis;
-      } catch (error) {
-        console.log("error", error);
-      }
-      this.isLoading = false;
+      this.emojiQuery = "";
+      this.searchEmoji();
     },
 
     async searchEmoji() {
+      this.empty = false;
       this.isLoading = true;
       const { searchResults, error } = await EmojiApi.searchEmoji(
         this.emojiQuery
       );
-      if (!error) this.emojiShown = searchResults;
+      if (!error) {
+        this.emojiShown = searchResults;
+        if (!searchResults) this.emojiShown = [];
+        else {
+          // filter out duplicates with e[number] prefixes
+          const r = new RegExp(/e\d+-\d+/);
+          this.emojiShown = searchResults.filter(
+            (emoji) => !r.test(emoji.slug)
+          );
+        }
+        if (this.emojiShown.length === 0) this.badQuery = this.emojiQuery;
+      }
       this.isLoading = false;
     },
 
@@ -144,15 +158,26 @@ export default {
     },
   },
 
+  watch: {
+    emojiQuery(emojiQuery) {
+      if (emojiQuery.length === 0) {
+        this.empty = true;
+      }
+    },
+  },
+
   components: {
     EmojiSearch,
     MyHeader,
     EmojiGridItem,
     MyFooter,
     MyToast,
+    Loader,
+    EmptyState,
   },
 };
 </script>
+    EmptyState
 
 <style lang="scss">
 #app {
