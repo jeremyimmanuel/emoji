@@ -4,7 +4,20 @@ This is a simple webapp that calls the open emoji api and shows it to the user.
 
 ## Current status
 
-In progress..
+Deployed.
+
+You can check website [here](http://emojiclip.dev.s3-website-us-west-1.amazonaws.com/).
+
+## Credits
+
+I used <https://gitmoji.dev/> as design inspiration.
+
+## Used Libraries
+
+1. Vue.js
+2. Tailwindcss
+3. Clipboardjs
+4. Github primer
 
 ## Project setup
 ```
