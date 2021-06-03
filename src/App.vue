@@ -149,7 +149,6 @@ export default {
     var clipboard = new ClipboardJS(".emoji");
 
     clipboard.on("success", (e) => {
-      // if (!this.copied) this.copied = true;
       this.copiedEmoji = e.text;
       this.addToast();
       setTimeout(() => this.removeOldestToast(), 2000);

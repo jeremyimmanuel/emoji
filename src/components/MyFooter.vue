@@ -4,7 +4,7 @@
   >
     <span class="text-xl">
       Developed by
-      <a href="mailto:jeremytandjung@icloud.com" target="_blank">
+      <a href="mailto:jeremytandjung@icloud.com" target="_blank" class="mailto">
         Jeremy Tandjung
       </a>
     </span>
@@ -38,4 +38,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mailto {
+  &:hover {
+    color: rgb(95, 170, 255);
+    font-weight: bold;
+  }
+}
 </style>
