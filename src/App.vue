@@ -14,15 +14,14 @@
     <div
       class="grid grid-cols-3 gap-4 sm:flex sm:flex-row sm:justify-between my-4 sm:mx-4"
     >
-      <j-button>😀 Smiley</j-button>
-      <j-button>👁️ Body</j-button>
-      <j-button>🐻 Animals</j-button>
-      <j-button>🍔 Food</j-button>
-      <j-button>⚽ Activites</j-button>
-      <j-button>🚘 Travel</j-button>
-      <j-button>💡 Objects</j-button>
-      <j-button>🔣 Symbols</j-button>
-      <j-button>🏁 Flags</j-button>
+      <j-button
+        v-for="cat in emojiCategories"
+        :key="cat.key"
+        :disabled="isLoading"
+        @click="() => fetchByCategory(cat.key)"
+      >
+        {{ cat.icon }} {{ cat.label }}
+      </j-button>
     </div>
     <div class="my-6">
       <empty-state v-if="empty" />
@@ -41,7 +40,9 @@
               />
             </div>
           </div>
-          <div v-else>No emoji found for {{ badQuery }}</div>
+          <div v-else class="text-gray-700 font-bold text-4xl">
+            No emoji found for {{ badQuery }} 😞
+          </div>
         </template>
         <div v-else>
           <loader class="my-4">{{ copiedEmoji }}</loader>
@@ -69,10 +70,59 @@ import Loader from "@/components/Loader.vue";
 import JButton from "@/components/JButton.vue";
 
 import EmojiApi from "@/services/emojiApi";
+import { EmojiCategories } from "@/constants";
 
 import ClipboardJS from "clipboard";
 import { v4 as uuidv4 } from "uuid";
 import EmptyState from "@/components/EmptyState.vue";
+
+const emojiCategories = [
+  {
+    key: EmojiCategories.SMILEYS,
+    label: "Smileys",
+    icon: "😀",
+  },
+  {
+    key: EmojiCategories.BODY,
+    label: "Body",
+    icon: "👁️",
+  },
+  {
+    key: EmojiCategories.ANIMALS,
+    label: "Nature",
+    icon: "🐻",
+  },
+  {
+    key: EmojiCategories.FOOD,
+    label: "Food",
+    icon: "🍔",
+  },
+  {
+    key: EmojiCategories.ACTIVITIES,
+    label: "Activites",
+    icon: "⚽",
+  },
+  {
+    key: EmojiCategories.TRAVEL,
+    label: "Travel",
+    icon: "✈️",
+  },
+  {
+    key: EmojiCategories.OBJECTS,
+    label: "Objects",
+    icon: "💡",
+  },
+  {
+    key: EmojiCategories.SYMBOLS,
+    label: "Symbols",
+    icon: "🔣",
+  },
+  {
+    key: EmojiCategories.FLAGS,
+    label: "Flags",
+    icon: "🏁",
+  },
+];
 
 export default {
   name: "App",
@@ -91,6 +141,7 @@ export default {
   },
 
   async created() {
+    this.emojiCategories = emojiCategories;
     var clipboard = new ClipboardJS(".emoji");
 
     clipboard.on("success", (e) => {
@@ -117,6 +168,18 @@ export default {
     async fetchAllEmojis() {
       this.emojiQuery = "";
       this.searchEmoji();
+    },
+
+    async fetchByCategory(category) {
+      this.isLoading = true;
+      const { searchResults, error } = await EmojiApi.fetchEmojiByCategory(
+        category
+      );
+      if (!error) {
+        const r = new RegExp(/e\d+-\d+/);
+        this.emojiShown = searchResults.filter((emoji) => !r.test(emoji.slug));
+      }
+      this.isLoading = false;
     },
 
     async searchEmoji() {
