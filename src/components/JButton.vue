@@ -27,20 +27,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$shadow-color: rgb(255, 120, 120);
+
 .j-button {
   outline: 0;
   position: relative;
-  box-shadow: 0 4px red;
+  box-shadow: 0 4px $shadow-color;
 }
 .button-effect {
   &:hover {
     top: 2px;
-    box-shadow: 0 2px red;
+    box-shadow: 0 2px $shadow-color;
   }
 
   &:active {
     top: 4px;
-    box-shadow: 0 0 red;
+    box-shadow: 0 0 $shadow-color;
   }
 }
 
