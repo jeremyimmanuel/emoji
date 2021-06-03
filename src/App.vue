@@ -3,10 +3,14 @@
     <my-header :o-title="copiedEmoji">
       <emoji-search
         class="mt-auto emoji-search md:w-6/12 w-full"
+        :class="{
+          'cursor-not-allowed': isLoading,
+        }"
         :value="emojiQuery"
         @input="emojiQuery = $event.target.value"
         type="text"
-        placeholder="Search emoji"
+        placeholder="Search emoji or press enter to get all emojis"
+        :disabled="isLoading"
         @keyup.enter="searchEmoji"
       />
     </my-header>
@@ -171,6 +175,7 @@ export default {
     },
 
     async fetchByCategory(category) {
+      this.empty = false;
       this.isLoading = true;
       const { searchResults, error } = await EmojiApi.fetchEmojiByCategory(
         category
@@ -186,7 +191,7 @@ export default {
       this.empty = false;
       this.isLoading = true;
       const { searchResults, error } = await EmojiApi.searchEmoji(
-        this.emojiQuery
+        this.emojiQuery.trim()
       );
       if (!error) {
         this.emojiShown = searchResults;
@@ -219,7 +224,7 @@ export default {
 
   watch: {
     emojiQuery(emojiQuery) {
-      if (emojiQuery.length === 0) {
+      if (emojiQuery.length === 0 && this.emojiShown.length === 0) {
         this.empty = true;
       }
     },
