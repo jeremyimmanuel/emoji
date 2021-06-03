@@ -14,5 +14,9 @@ export default {
 <style lang="scss" scoped>
 input {
   outline: 0;
+  border: 2px solid transparent;
+  &:focus {
+    border: 2px solid black;
+  }
 }
 </style>

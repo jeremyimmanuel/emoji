@@ -33,11 +33,18 @@ $shadow-color: rgb(255, 120, 120);
   outline: 0;
   position: relative;
   box-shadow: 0 4px $shadow-color;
+
+  border: 2px solid transparent;
 }
 .button-effect {
-  &:hover {
+  &:hover,
+  &:focus {
     top: 2px;
     box-shadow: 0 2px $shadow-color;
+  }
+
+  &:focus {
+    border: 2px solid black;
   }
 
   &:active {
