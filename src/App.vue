@@ -2,7 +2,7 @@
   <div class="flex flex-col justify-center items-center">
     <my-header :o-title="copiedEmoji">
       <emoji-search
-        class="mt-auto"
+        class="mt-auto emoji-search md:w-6/12 w-full"
         :value="emojiQuery"
         @input="emojiQuery = $event.target.value"
         type="text"
@@ -11,6 +11,19 @@
       />
     </my-header>
     <!-- Body -->
+    <div
+      class="grid grid-cols-3 gap-4 sm:flex sm:flex-row sm:justify-between my-4 sm:mx-4"
+    >
+      <j-button>😀 Smiley</j-button>
+      <j-button>👁️ Body</j-button>
+      <j-button>🐻 Animals</j-button>
+      <j-button>🍔 Food</j-button>
+      <j-button>⚽ Activites</j-button>
+      <j-button>🚘 Travel</j-button>
+      <j-button>💡 Objects</j-button>
+      <j-button>🔣 Symbols</j-button>
+      <j-button>🏁 Flags</j-button>
+    </div>
     <div class="my-6">
       <empty-state v-if="empty" />
       <template v-else>
@@ -53,6 +66,7 @@ import EmojiGridItem from "@/components/EmojiGridItem.vue";
 import MyFooter from "@/components/MyFooter.vue";
 import MyToast from "@/components/MyToast.vue";
 import Loader from "@/components/Loader.vue";
+import JButton from "@/components/JButton.vue";
 
 import EmojiApi from "@/services/emojiApi";
 
@@ -156,6 +170,7 @@ export default {
     MyToast,
     Loader,
     EmptyState,
+    JButton,
   },
 };
 </script>
@@ -169,6 +184,12 @@ export default {
   text-align: center;
   color: #2c3e50;
   height: 100%;
+}
+
+.emoji-search {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
 
 .my-toast {
