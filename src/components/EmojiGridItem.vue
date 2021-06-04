@@ -31,12 +31,12 @@ export default {
 
 .tooltipped {
   &::after {
-    margin-bottom: 24px;
+    margin-bottom: 40px;
     font-size: 1rem;
   }
 
   &::before {
-    top: -24px;
+    top: -40px;
   }
 }
 </style>
