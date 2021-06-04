@@ -10,14 +10,14 @@ You can check website [here](http://emojiclip.dev.s3-website-us-west-1.amazonaws
 
 ## Credits
 
-I used <https://gitmoji.dev/> as design inspiration.
+I used <https://gitmoji.dev/> as a design inspiration.
 
 ## Used Libraries
 
-1. Vue.js
-2. Tailwindcss
-3. Clipboardjs
-4. Github primer
+1. [Vue.js](https://v3.vuejs.org/)
+2. [Tailwindcss](https://tailwindcss.com/)
+3. [Clipboardjs](https://clipboardjs.com/)
+4. [Github primer](https://primer.style/css/)
 5. [Open emoji api](https://emoji-api.com/)
 
 ## Project setup
