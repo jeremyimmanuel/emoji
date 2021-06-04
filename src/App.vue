@@ -28,33 +28,38 @@
       </j-button>
     </div>
     <div class="my-6">
-      <empty-state v-if="empty" />
+      <div v-if="error" class="text-4xl">
+        😥 Woops, looks like something went wrong. Please try again later
+      </div>
       <template v-else>
-        <template v-if="!isLoading">
-          <div
-            v-if="this.emojiShown.length"
-            class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
-          >
-            <div v-for="emoji in emojiShown" :key="emoji.slug">
-              <emoji-grid-item
-                class="emoji"
-                :data-clipboard-text="emoji.character"
-                :tooltip-text="emoji.unicodeName"
-                :emoji="emoji.character"
-              />
+        <empty-state v-if="empty" />
+        <template v-else>
+          <template v-if="!isLoading">
+            <div
+              v-if="this.emojiShown.length"
+              class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
+            >
+              <div v-for="emoji in emojiShown" :key="emoji.slug">
+                <emoji-grid-item
+                  class="emoji"
+                  :data-clipboard-text="emoji.character"
+                  :tooltip-text="emoji.unicodeName"
+                  :emoji="emoji.character"
+                />
+              </div>
             </div>
-          </div>
-          <div v-else class="text-gray-700 font-bold text-4xl">
-            No emoji found for {{ badQuery }} 😞
+            <div v-else class="text-gray-700 font-bold text-4xl">
+              No emoji found for {{ badQuery }} 😞
+            </div>
+          </template>
+          <div v-else>
+            <div class="mb-6">
+              <span class="text-4xl">Loading</span>
+              <span class="AnimatedEllipsis text-4xl" />
+            </div>
+            <loader class="my-4">{{ copiedEmoji }}</loader>
           </div>
         </template>
-        <div v-else>
-          <div class="mb-6">
-            <span class="text-4xl">Loading</span>
-            <span class="AnimatedEllipsis text-4xl" />
-          </div>
-          <loader class="my-4">{{ copiedEmoji }}</loader>
-        </div>
       </template>
     </div>
     <my-footer />
@@ -142,6 +147,7 @@ export default {
       isLoading: false,
       toastArray: [],
       empty: false,
+      error: false,
     };
   },
 
@@ -183,6 +189,8 @@ export default {
       if (!error) {
         const r = new RegExp(/e\d+-\d+/);
         this.emojiShown = searchResults.filter((emoji) => !r.test(emoji.slug));
+      } else {
+        this.error = true;
       }
       this.isLoading = false;
     },
@@ -204,6 +212,8 @@ export default {
           );
         }
         if (this.emojiShown.length === 0) this.badQuery = this.emojiQuery;
+      } else {
+        this.error = true;
       }
       this.isLoading = false;
     },
