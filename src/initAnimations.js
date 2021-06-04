@@ -46,5 +46,4 @@ for (let i = 0; i < 6; i++) {
         easing: "bounce",
     });
 }
-
 slinky.define("slinky");

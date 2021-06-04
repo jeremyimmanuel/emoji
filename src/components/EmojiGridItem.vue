@@ -1,8 +1,8 @@
 <template>
   <span class="tooltipped tooltipped-n" :aria-label="tooltipText">
-    <div class="text-5xl cursor-pointer emojiItem">
+    <button class="text-5xl cursor-pointer emojiItem">
       {{ emoji }}
-    </div>
+    </button>
   </span>
 </template>
 
@@ -31,11 +31,12 @@ export default {
 
 .tooltipped {
   &::after {
-    margin-bottom: 12px;
+    margin-bottom: 24px;
+    font-size: 1rem;
   }
 
   &::before {
-    top: -12px;
+    top: -24px;
   }
 }
 </style>

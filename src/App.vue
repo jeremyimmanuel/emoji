@@ -49,6 +49,8 @@
           </div>
         </template>
         <div v-else>
+          <span class="text-4xl">Loading</span>
+          <span class="AnimatedEllipsis text-4xl" />
           <loader class="my-4">{{ copiedEmoji }}</loader>
         </div>
       </template>
