@@ -18,26 +18,32 @@ I used <https://gitmoji.dev/> as design inspiration.
 2. Tailwindcss
 3. Clipboardjs
 4. Github primer
+5. [Open emoji api](https://emoji-api.com/)
 
 ## Project setup
-```
+
+```bash
 yarn install
 ```
 
 ### Compiles and hot-reloads for development
-```
+
+```bash
 yarn serve
 ```
 
 ### Compiles and minifies for production
-```
+
+```bash
 yarn build
 ```
 
 ### Lints and fixes files
-```
+
+```bash
 yarn lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
