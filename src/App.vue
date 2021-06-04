@@ -36,10 +36,10 @@
         <template v-else>
           <template v-if="!isLoading">
             <div
-              v-if="this.emojiShown.length"
+              v-if="this.emojiListFiltered.length"
               class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-8 grid-flow-row auto-cols-fr w-xl"
             >
-              <div v-for="emoji in emojiShown" :key="emoji.slug">
+              <div v-for="emoji in emojiListFiltered" :key="emoji.slug">
                 <emoji-grid-item
                   class="emoji"
                   :data-clipboard-text="emoji.character"
@@ -142,10 +142,11 @@ export default {
       copiedEmoji: "😂",
       emojiQuery: "",
       badQuery: "",
-      emojiShown: [],
-      copied: false,
-      isLoading: false,
+
+      emojiList: [],
       toastArray: [],
+
+      isLoading: false,
       empty: false,
       error: false,
     };
@@ -161,25 +162,29 @@ export default {
       setTimeout(() => this.removeOldestToast(), 2000);
     });
 
+    // fetch all emojis
     await this.searchEmoji();
   },
 
   computed: {
-    /** The open emoji api returns duplicates emojis with a e[number]-[number] prefix */
-    emojiShownFiltered() {
-      if (!this.emojiShown) return [];
+    /**
+     * The open emoji api returns duplicates emojis with a e[number]-[number] prefix
+     *
+     * @returns {array}
+     */
+    emojiListFiltered() {
+      if (!this.emojiList || this.emojiList.length === 0) return [];
       const r = new RegExp(/e\d+-\d+/);
-      return this.emojiShown.filter((emoji) => !r.test(emoji.slug));
+      return this.emojiList.filter((emoji) => !r.test(emoji.slug));
     },
   },
 
   methods: {
-    /** Not used */
-    async fetchAllEmojis() {
-      this.emojiQuery = "";
-      this.searchEmoji();
-    },
-
+    /**
+     * Fetch all emojis in a category
+     *
+     * @param {string} category
+     */
     async fetchByCategory(category) {
       this.empty = false;
       this.isLoading = true;
@@ -187,8 +192,7 @@ export default {
         category
       );
       if (!error) {
-        const r = new RegExp(/e\d+-\d+/);
-        this.emojiShown = searchResults.filter((emoji) => !r.test(emoji.slug));
+        this.emojiList = searchResults;
       } else {
         this.error = true;
       }
@@ -198,23 +202,22 @@ export default {
     async searchEmoji() {
       this.empty = false;
       this.isLoading = true;
+
       const { searchResults, error } = await EmojiApi.searchEmoji(
         this.emojiQuery.trim()
       );
+
       if (!error) {
-        this.emojiShown = searchResults;
-        if (!searchResults) this.emojiShown = [];
-        else {
-          // filter out duplicates with e[number] prefixes
-          const r = new RegExp(/e\d+-\d+/);
-          this.emojiShown = searchResults.filter(
-            (emoji) => !r.test(emoji.slug)
-          );
-        }
-        if (this.emojiShown.length === 0) this.badQuery = this.emojiQuery;
+        this.emojiList = searchResults;
+        if (!searchResults) this.emojiList = [];
+        else this.emojiList = searchResults;
+
+        if (this.emojiListFiltered.length === 0)
+          this.badQuery = this.emojiQuery;
       } else {
         this.error = true;
       }
+
       this.isLoading = false;
     },
 
@@ -234,7 +237,7 @@ export default {
 
   watch: {
     emojiQuery(emojiQuery) {
-      if (emojiQuery.length === 0 && this.emojiShown.length === 0) {
+      if (emojiQuery.length === 0 && this.emojiList.length === 0) {
         this.empty = true;
       }
     },
@@ -252,7 +255,6 @@ export default {
   },
 };
 </script>
-    EmptyState
 
 <style lang="scss">
 #app {
