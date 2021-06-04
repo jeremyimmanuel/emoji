@@ -9,6 +9,3 @@ export default {
   name: "EmptyState",
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

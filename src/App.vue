@@ -199,6 +199,7 @@ export default {
       this.isLoading = false;
     },
 
+    // good place to use a decorator, but had an parse error
     async searchEmoji() {
       this.empty = false;
       this.isLoading = true;
