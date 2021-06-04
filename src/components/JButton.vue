@@ -5,7 +5,7 @@
     :class="{
       'button-effect': !disabled,
       'cursor-not-allowed': disabled,
-      disabled,
+      'opacity-50': disabled,
     }"
     :disabled="disabled"
   >
@@ -51,9 +51,5 @@ $shadow-color: rgb(255, 120, 120);
     top: 4px;
     box-shadow: 0 0 $shadow-color;
   }
-}
-
-.disabled {
-  opacity: 0.5;
 }
 </style>

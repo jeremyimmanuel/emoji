@@ -1,3 +1,7 @@
+/**
+ * Inititiates animations via bounce.js library
+ */
+
 import Bounce from "bounce.js";
 
 let scale15 = new Bounce();

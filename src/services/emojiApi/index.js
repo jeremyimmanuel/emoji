@@ -8,6 +8,13 @@ const categoriesEndpoint = new URL('categories', openEmojiApiEndpoint).href
 
 function EmojiApi() { }
 
+/**
+ * @typedef {object} fetchAllEmojisResponse
+ * @property {array} allEmojis
+ * @property {error} error
+ *
+ * @returns {fetchAllEmojisResponse}
+ */
 EmojiApi.prototype.fetchAllEmojis = async function () {
     const params = accessKey
     try {
@@ -18,6 +25,13 @@ EmojiApi.prototype.fetchAllEmojis = async function () {
     }
 }
 
+/**
+ * @typedef {object} searchEmojiResponse
+ * @property {array} searchResults
+ * @property {error} error
+ *
+ * @returns {searchEmojiResponse}
+ */
 EmojiApi.prototype.searchEmoji = async function (query) {
     const params = {
         search: query,
@@ -31,6 +45,13 @@ EmojiApi.prototype.searchEmoji = async function (query) {
     }
 }
 
+/**
+ * @typedef {object} fetchEmojiByCategoryResponse
+ * @property {array} searchResults
+ * @property {error} error
+ *
+ * @returns {fetchEmojiByCategoryResponse}
+ */
 EmojiApi.prototype.fetchEmojiByCategory = async function (category) {
     const params = {
         ...accessKey

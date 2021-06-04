@@ -1,6 +1,6 @@
 <template>
   <div
-    class="my-toast fixed top-4 left-4 bg-yellow-200 text-xl text-gray-700 font-bold rounded-md p-2 shadow"
+    class="my-toast fixed top-4 left-4 bg-yellow-200 text-xl text-gray-700 font-bold rounded-md p-2 shadow-md"
   >
     <slot />
   </div>
@@ -13,4 +13,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.my-toast {
+  animation: road-runner 1s ease-in-out both;
+}
 </style>

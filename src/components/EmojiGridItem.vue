@@ -1,5 +1,5 @@
 <template>
-  <span class="tooltipped tooltipped-n" :aria-label="tooltipText">
+  <span class="tooltipped tooltipped-n" :aria-label="tooltipTextCapitalized">
     <button class="text-5xl cursor-pointer emojiItem">
       {{ emoji }}
     </button>
@@ -18,13 +18,21 @@ export default {
       type: String,
     },
   },
+
+  computed: {
+    /** @returns {string} */
+    tooltipTextCapitalized() {
+      let retVal = this.tooltipText;
+      return retVal.replace(/^\w/, (s) => s.toUpperCase());
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .emojiItem {
   &:hover {
-    // bounce animation defined in `App.vue`
+    // scale15 animation defined in `initAnimation`
     animation: scale15 0.5s linear both;
   }
 }

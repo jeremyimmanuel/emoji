@@ -49,18 +49,16 @@
           </div>
         </template>
         <div v-else>
-          <span class="text-4xl">Loading</span>
-          <span class="AnimatedEllipsis text-4xl" />
+          <div class="mb-6">
+            <span class="text-4xl">Loading</span>
+            <span class="AnimatedEllipsis text-4xl" />
+          </div>
           <loader class="my-4">{{ copiedEmoji }}</loader>
         </div>
       </template>
     </div>
     <my-footer />
-    <my-toast
-      v-for="toastData in toastArray"
-      :key="toastData.id"
-      emojiclass="my-toast"
-    >
+    <my-toast v-for="toastData in toastArray" :key="toastData.id">
       {{ toastData.emoji }} copied!
     </my-toast>
   </div>
@@ -68,19 +66,20 @@
 
 <script>
 import MyHeader from "@/components/MyHeader.vue";
-import EmojiSearch from "@/components/EmojiSearch.vue";
-import EmojiGridItem from "@/components/EmojiGridItem.vue";
 import MyFooter from "@/components/MyFooter.vue";
 import MyToast from "@/components/MyToast.vue";
+import EmojiSearch from "@/components/EmojiSearch.vue";
+import EmojiGridItem from "@/components/EmojiGridItem.vue";
 import Loader from "@/components/Loader.vue";
 import JButton from "@/components/JButton.vue";
+import EmptyState from "@/components/EmptyState.vue";
 
 import EmojiApi from "@/services/emojiApi";
+
 import { EmojiCategories } from "@/constants";
 
 import ClipboardJS from "clipboard";
 import { v4 as uuidv4 } from "uuid";
-import EmptyState from "@/components/EmptyState.vue";
 
 const emojiCategories = [
   {
@@ -253,25 +252,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   height: 100%;
-}
-
-.emoji-search {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-}
-
-.my-toast {
-  animation: road-runner 1s ease-in-out both;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>
