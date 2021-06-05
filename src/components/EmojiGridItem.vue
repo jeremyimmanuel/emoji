@@ -7,6 +7,9 @@
 </template>
 
 <script>
+import useCapitalize from "@/use/capitalize";
+import { computed } from "vue";
+
 export default {
   name: "EmojiGridItem",
 
@@ -19,12 +22,17 @@ export default {
     },
   },
 
-  computed: {
-    /** @returns {string} */
-    tooltipTextCapitalized() {
-      let retVal = this.tooltipText;
-      return retVal.replace(/^\w/, (s) => s.toUpperCase());
-    },
+  /**
+   * Not really necessary to use composition api here,
+   * but a good exercise
+   */
+  setup(props) {
+    const { capitalize } = useCapitalize();
+    const tooltipTextCapitalized = computed(() => {
+      return capitalize(props.tooltipText);
+    });
+
+    return { tooltipTextCapitalized };
   },
 };
 </script>

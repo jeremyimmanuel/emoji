@@ -187,6 +187,7 @@ export default {
      */
     async fetchByCategory(category) {
       this.empty = false;
+      this.emojiQuery = "";
       this.isLoading = true;
       const { searchResults, error } = await EmojiApi.fetchEmojiByCategory(
         category
