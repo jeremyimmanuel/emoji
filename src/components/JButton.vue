@@ -3,9 +3,10 @@
     v-bind="$attrs"
     class="j-button bg-red-200 rounded-md p-2"
     :class="{
-      'button-effect': !disabled,
+      'button-effect': !disabled && !active,
       'cursor-not-allowed': disabled,
       'opacity-50': disabled,
+      active: active,
     }"
     :disabled="disabled"
   >
@@ -19,6 +20,11 @@ export default {
 
   props: {
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+
+    active: {
       type: Boolean,
       default: false,
     },
@@ -36,6 +42,12 @@ $shadow-color: rgb(255, 120, 120);
 
   border: 2px solid transparent;
 }
+
+@mixin pressed {
+  top: 4px;
+  box-shadow: 0 0 $shadow-color;
+}
+
 .button-effect {
   &:hover,
   &:focus {
@@ -48,8 +60,11 @@ $shadow-color: rgb(255, 120, 120);
   }
 
   &:active {
-    top: 4px;
-    box-shadow: 0 0 $shadow-color;
+    @include pressed;
   }
+}
+
+.active {
+  @include pressed;
 }
 </style>

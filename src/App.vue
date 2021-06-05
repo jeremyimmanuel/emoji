@@ -22,7 +22,12 @@
         v-for="cat in emojiCategories"
         :key="cat.key"
         :disabled="isLoading"
-        @click="() => fetchByCategory(cat.key)"
+        :active="selectedCategory === cat.key"
+        @click="
+          () => {
+            if (selectedCategory !== cat.key) fetchByCategory(cat.key);
+          }
+        "
       >
         {{ cat.icon }} {{ cat.label }}
       </j-button>
@@ -146,6 +151,8 @@ export default {
       emojiList: [],
       toastArray: [],
 
+      selectedCategory: null,
+
       isLoading: false,
       empty: false,
       error: false,
@@ -186,14 +193,17 @@ export default {
      * @param {string} category
      */
     async fetchByCategory(category) {
+      this.selectedCategory = null;
       this.empty = false;
       this.emojiQuery = "";
+
       this.isLoading = true;
       const { searchResults, error } = await EmojiApi.fetchEmojiByCategory(
         category
       );
       if (!error) {
         this.emojiList = searchResults;
+        this.selectedCategory = category;
       } else {
         this.error = true;
       }
@@ -203,6 +213,7 @@ export default {
     // good place to use a decorator, but had an parse error
     async searchEmoji() {
       this.empty = false;
+      this.selectedCategory = null;
       this.isLoading = true;
 
       const { searchResults, error } = await EmojiApi.searchEmoji(
