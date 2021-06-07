@@ -6,7 +6,7 @@ This is a simple webapp that calls the open emoji api and shows it to the user.
 
 Deployed.
 
-You can check website [here](http://emojiclip.dev.s3-website-us-west-1.amazonaws.com/).
+You can check website [here](http://emojiclip.dev).
 
 ## Credits
 
